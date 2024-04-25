@@ -1,0 +1,6 @@
+galaxy_info:
+  author: Elhadji Malang Diedhiou
+  description: Automation Engineer
+  company: Elhadji Malang Consultancy Services
+  license: license (GPL-2.0-or-later, MIT, etc)
+  min_ansible_version: '2.9'

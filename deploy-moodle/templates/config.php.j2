@@ -1,0 +1,33 @@
+#jinja2: lstrip_blocks: True
+<?php
+
+$CFG = new stdClass();
+
+// Database settings
+$CFG->dbtype    = 'mariadb';
+$CFG->dblibrary = 'native';
+$CFG->dbhost    = 'mariadb';
+$CFG->dbname    = '{{credentials.mariadb_dbname}}'; 
+$CFG->dbuser    = '{{credentials.mariadb_nonrootuser}}';   
+$CFG->dbpass    = '{{credentials.mariadb_nonrootpassword}}'; 
+$CFG->prefix    = 'mdl_'; 
+
+// Other settings
+$CFG->wwwroot   = 'https://{{domain}}';
+$CFG->dataroot  = '{{xayma_moodleapp_paths.dataroot}}';
+$CFG->themedir    = '{{xayma_moodleapp_paths.themes}}';
+$CFG->admin     = 'admin';
+$CFG->directorypermissions = 0770;
+
+$CFG->reverseproxy = false;
+$CFG->sslproxy = true;
+
+// Disable installation check
+$CFG->installed = true;
+
+$CFG->slasharguments = false;
+
+require_once(__DIR__ . '/lib/setup.php');
+$CFG->unicodedb = true;
+$CFG->includeuserpasswordsinbackups = true;
+?>

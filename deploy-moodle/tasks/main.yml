@@ -1,0 +1,19 @@
+---
+# tasks file for deploy-N8N
+- import_tasks: 0-register-platform-defaults.yml
+  tags: deploy, stopinstance, restartinstance, suspendinstance, startinstance, editinstancedomainname
+
+- import_tasks: deploy-moodle.yml
+  tags: deploy
+
+- import_tasks: stop-instance.yml
+  tags: stopinstance, suspendinstance
+
+- import_tasks: start-instance.yml
+  tags: startinstance
+
+- import_tasks: restart-instance.yml
+  tags: restartinstance
+
+- import_tasks: edit-instance-domainname.yml
+  tags: editinstancedomainname

@@ -1,0 +1,64 @@
+#jinja2: lstrip_blocks: True
+FROM php:8.1.4-fpm-buster
+
+ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS="0" \
+    PHP_OPCACHE_MAX_ACCELERATED_FILES="10000" \
+    PHP_OPCACHE_MEMORY_CONSUMPTION="192" \
+    PHP_OPCACHE_MAX_WASTED_PERCENTAGE="10"
+
+# Install PHP Extensions & and other dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        libcurl4 \
+        libcurl4-openssl-dev \
+        libpng-dev \
+        libjpeg-dev \
+        libxml2-dev \
+        libexif-dev \
+        libzip-dev \
+        libonig-dev \
+        libicu-dev \
+        unzip \
+        nginx \
+        git \
+        nodejs \
+        npm \
+        graphviz aspell ghostscript clamav \
+    && pecl install apcu \
+    && docker-php-ext-install curl gd intl mbstring pdo pdo_mysql mysqli zip soap exif intl opcache \
+    && docker-php-ext-enable apcu opcache \
+    && docker-php-ext-configure intl \
+    && docker-php-ext-configure zip \
+    && docker-php-source delete \
+    && rm -rf /tmp/pear \
+    && rm -rf /var/cache/apk/* \
+    && rm -rf /var/lib/apt/lists/*
+
+# PHP Configuration
+RUN mv ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini \
+&& sed -E -i -e 's/upload_max_filesize = 2M/upload_max_filesize = 128M/' ${PHP_INI_DIR}/php.ini \
+&& sed -E -i -e 's/post_max_size = 8M/post_max_size = 128M/' ${PHP_INI_DIR}/php.ini \
+&& sed -E -i -e 's/memory_limit = 128M/memory_limit = 256M/' ${PHP_INI_DIR}/php.ini \
+&& sed -E -i -e 's/;max_input_vars = 1000/max_input_vars = 5000/' ${PHP_INI_DIR}/php.ini \
+&& echo "apc.enable_cli = 1" >> ${PHP_INI_DIR}/php.ini
+
+# Copy Web Servers Config Files
+COPY ./build/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+COPY ./build/nginx-block.conf /etc/nginx/sites-available/default 
+COPY ./build/entrypoint.sh /var/www/entrypoint.sh
+
+# Install Moodle
+WORKDIR /var/www
+RUN git clone --branch v{{version}} --single-branch --depth 1 https://github.com/moodle/moodle.git moodle \
+    && cd moodle \
+    && chmod +x /var/www/entrypoint.sh \
+    && chown -R www-data:www-data /var/www/moodle \
+    && chmod -R 755 /var/www/moodle
+
+# Create the moodledata folder
+RUN mkdir -p {{xayma_moodleapp_paths.dataroot}} {{xayma_moodleapp_paths.themes}} \
+    && chown -R www-data:www-data {{xayma_moodleapp_paths.dataroot}} {{xayma_moodleapp_paths.themes}} \
+    && chmod -R 770 {{xayma_moodleapp_paths.dataroot}} {{xayma_moodleapp_paths.themes}}
+
+# Start Web Server
+CMD /bin/bash /var/www/entrypoint.sh
+EXPOSE 80

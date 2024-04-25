@@ -1,0 +1,16 @@
+---
+- name: Updating the Docker-Compose file to add the new domain name
+  template:
+    src: docker-compose.yml.j2
+    force: yes
+    dest: "{{ xayma_moodleapp_paths.instance }}/docker-compose.yml"
+    mode: '0644'
+  when: instancename != xayma_automation.instancename and ( organization != "" and organization != xayma_automation.organization ) and instancename != domain  
+
+- name: Restarting moodle instance
+  docker_compose:
+    project_src: "{{ xayma_moodleapp_paths.instance }}"
+    state: present
+    restarted: true
+  when: instancename != xayma_automation.instancename and ( organization != "" and organization != xayma_automation.organization ) and instancename != domain  
+  

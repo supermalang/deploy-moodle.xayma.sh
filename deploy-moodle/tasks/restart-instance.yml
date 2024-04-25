@@ -1,0 +1,8 @@
+---
+- name: Restarting moodle instance
+  docker_compose:
+    project_src: "{{ xayma_moodleapp_paths.instance }}"
+    state: present
+    restarted: true
+  when: instancename != xayma_automation.instancename # We make sure the user has provided an instance name
+  

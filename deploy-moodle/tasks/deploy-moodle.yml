@@ -1,0 +1,50 @@
+---
+
+- name: Creating the moodle instance directory
+  file:
+    path: "{{ xayma_moodleapp_paths.instance }}"
+    state: directory
+    mode: '0755'
+
+- name: Creating the moodle instance config directory
+  file:
+    path: "{{ xayma_moodleapp_paths.config }}"
+    state: directory
+    mode: '0755'
+
+- name: Creating the build folder, for image building
+  file:
+    path: "{{ xayma_moodleapp_paths.build }}"
+    state: directory
+    mode: '0755'
+
+- name: Creating Docker compose file
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ xayma_moodleapp_paths.instance }}/docker-compose.yml"
+    mode: '0644'
+
+- name: Creating Dockerfile
+  template:
+    src: Dockerfile.j2
+    dest: "{{ xayma_moodleapp_paths.instance }}/Dockerfile"
+    mode: '0644'
+
+- name: Creating config.php file
+  template:
+    src: config.php.j2
+    dest: "{{ xayma_moodleapp_paths.config }}/config.php"
+    mode: '0644'
+
+- name: Copying Image Build files
+  copy:
+    src: "{{ item }}"
+    dest: "{{ xayma_moodleapp_paths.build }}/{{ item | basename }}"
+  loop:
+    - entrypoint.sh
+    - nginx-block.conf
+    - opcache.ini
+ 
+- name: Deploying the moodle instance
+  docker_compose:
+    project_src: "{{ xayma_moodleapp_paths.instance }}"

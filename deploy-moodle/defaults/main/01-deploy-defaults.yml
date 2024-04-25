@@ -1,0 +1,7 @@
+---
+# defaults file for deploy-moodle.xayma.sh
+xayma_moodleapp:
+    name: bitnami/moodle
+    organization: "xayma"
+    instancename: "moodleapp"
+    version: "4.3.4"

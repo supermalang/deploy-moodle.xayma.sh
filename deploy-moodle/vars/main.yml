@@ -1,0 +1,22 @@
+---
+# vars file for deploy-moodle.xayma.sh
+organization: "{{ xayma_moodleapp.organization }}"
+instancename: "{{ xayma_moodleapp.instancename }}"
+version: "{{ xayma_moodleapp.version }}"
+domain: "{{ instancename }}"
+_name: "{{ xayma_moodleapp.name }}"
+fullinstancename: "{{ organization }}_{{ instancename }}_moodle{{ version|default(xayma_moodleapp.version)|replace('.', '_') }}"
+fullinstancename_db: "{{organization}}_{{instancename}}_mariadb"
+defaultdomain: "{{platform_domain}}"
+
+domains:
+    - "{{ domain }}"
+    - "{{instancename}}.{{ defaultdomain }}"
+
+xayma_moodleapp_paths:
+    instance: "{{services_path}}/{{organization}}/{{instancename}}_moodle_{{version| replace('.', '_')}}"
+    config: "{{services_path}}/{{organization}}/{{instancename}}_moodle_{{version| replace('.', '_')}}/config"
+    build: "{{services_path}}/{{organization}}/{{instancename}}_moodle_{{version| replace('.', '_')}}/build"
+    userdata: "/opt/{{organization}}/{{instancename}}"
+    dataroot: "/opt/{{organization}}/{{instancename}}/dataroot"
+    themes: "/opt/{{organization}}/{{instancename}}/themes"
