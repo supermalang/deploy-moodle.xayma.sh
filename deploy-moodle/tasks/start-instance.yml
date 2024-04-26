@@ -11,4 +11,4 @@
   docker_compose:
     project_src: "{{ xayma_moodleapp_paths.instance }}"
     state: present
-  when: instancename != xayma_automation.instancename # We make sure the user has provided an instance name
+  when: instancename != xayma_moodleapp.instancename # We make sure the user has provided an instance name

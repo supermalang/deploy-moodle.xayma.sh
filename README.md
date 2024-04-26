@@ -7,7 +7,7 @@ It is intended to be used with the Ansible Tower and the Xayma.sh Platform alrea
 However if you want to use command create and manage n8n instances from the command line, with the Xayma.sh Platform already deployed, you can use the following:
 
 ```bash
-ansible-playbook site.yml -i production --tags "deploy" --extra-vars "organization=xaymasolutions instancename=automation domain=moodle.xaymasolutions.com" --vault-pass-file "vault_password" -K
+ansible-playbook site.yml -i production --tags "deploy" --extra-vars "organization=xaymasolutions instancename=formation domain=moodle.xaymasolutions.com" --vault-pass-file "vault_password" -K
 ```
 
 Requirements

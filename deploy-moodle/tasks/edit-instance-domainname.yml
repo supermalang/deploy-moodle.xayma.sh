@@ -5,12 +5,12 @@
     force: yes
     dest: "{{ xayma_moodleapp_paths.instance }}/docker-compose.yml"
     mode: '0644'
-  when: instancename != xayma_automation.instancename and ( organization != "" and organization != xayma_automation.organization ) and instancename != domain  
+  when: instancename != xayma_moodleapp.instancename and ( organization != "" and organization != xayma_moodleapp.organization ) and instancename != domain  
 
 - name: Restarting moodle instance
   docker_compose:
     project_src: "{{ xayma_moodleapp_paths.instance }}"
     state: present
     restarted: true
-  when: instancename != xayma_automation.instancename and ( organization != "" and organization != xayma_automation.organization ) and instancename != domain  
+  when: instancename != xayma_moodleapp.instancename and ( organization != "" and organization != xayma_moodleapp.organization ) and instancename != domain  
   
