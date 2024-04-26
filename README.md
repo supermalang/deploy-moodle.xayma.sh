@@ -1,4 +1,4 @@
-Deploy N8N
+Deploy Moodle
 =========
 
 This role is for deploying and managing Moodle instances with different versions.
