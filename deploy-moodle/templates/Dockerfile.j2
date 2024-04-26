@@ -56,9 +56,9 @@ RUN git clone --branch v{{version}} --single-branch --depth 1 https://github.com
 
 # Create the moodledata folder
 RUN mkdir -p {{xayma_moodleapp_paths.dataroot}} {{xayma_moodleapp_paths.themes}} \
-    && chown -R www-data:www-data {{xayma_moodleapp_paths.dataroot}} {{xayma_moodleapp_paths.themes}} \
-    && chmod -R 770 {{xayma_moodleapp_paths.dataroot}} {{xayma_moodleapp_paths.themes}}
+    && chown -R www-data:www-data {{xayma_moodleapp_paths.userdata}}  \
+    && chmod -R 770 {{xayma_moodleapp_paths.userdata}}
 
 # Start Web Server
-CMD /bin/bash /var/www/entrypoint.sh
+ENTRYPOINT ["bash", "-c", "/var/www/entrypoint.sh"]
 EXPOSE 80

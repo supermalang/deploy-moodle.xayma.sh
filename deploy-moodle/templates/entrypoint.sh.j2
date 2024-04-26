@@ -1,0 +1,22 @@
+#jinja2: lstrip_blocks: True
+#!/bin/sh
+
+# Check if these folders exist
+if [ ! -d "{{xayma_moodleapp_paths.dataroot}}" ]; then
+    mkdir -p {{xayma_moodleapp_paths.dataroot}}
+    chown -R www-data:www-data {{xayma_moodleapp_paths.dataroot}}
+    chmod -R 770 {{xayma_moodleapp_paths.dataroot}}
+    echo "Created {{xayma_moodleapp_paths.dataroot}}"
+fi
+
+if [ ! -d "{{xayma_moodleapp_paths.themes}}" ]; then
+    mkdir -p {{xayma_moodleapp_paths.themes}}
+    chown -R www-data:www-data {{xayma_moodleapp_paths.themes}}
+    chmod -R 770 {{xayma_moodleapp_paths.themes}}
+    echo "Created {{xayma_moodleapp_paths.themes}}"
+fi
+
+service nginx start
+php-fpm
+
+while true; do sleep 1d; done

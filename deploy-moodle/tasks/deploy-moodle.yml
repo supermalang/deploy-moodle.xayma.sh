@@ -36,12 +36,17 @@
     dest: "{{ xayma_moodleapp_paths.config }}/config.php"
     mode: '0644'
 
+- name: Creating the entrypoint.sh file
+  template:
+    src: entrypoint.sh.j2
+    dest: "{{ xayma_moodleapp_paths.build }}/entrypoint.sh"
+    mode: '0644'
+
 - name: Copying Image Build files
   copy:
     src: "{{ item }}"
     dest: "{{ xayma_moodleapp_paths.build }}/{{ item | basename }}"
   loop:
-    - entrypoint.sh
     - nginx-block.conf
     - opcache.ini
  
