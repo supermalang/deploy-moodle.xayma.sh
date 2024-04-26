@@ -27,6 +27,7 @@ You can use this role with the following tags:
 | startinstance          | To start the instance    |
 | suspendinstance        | To suspend the instance (stop and display a "suspended" page in the browser) |
 | editinstancedomainname | To change the main domain name of the instance   |
+| restartinstance        | To restart the instance |
 
 
 Role Variables
